@@ -12,4 +12,4 @@ server.addService(service, authorizations);
 
 server.bind(`0.0.0.0:${process.env.SERVICE_PORT}`, grpc.ServerCredentials.createInsecure());
 server.start();
-console.info(`Pijin Pijin service started successfully on port ${process.env.SERVICE_PORT}`);
+console.info(`Pijin Auth service started successfully on port ${process.env.SERVICE_PORT}`);

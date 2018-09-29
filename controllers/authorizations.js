@@ -4,12 +4,13 @@ const db = require('../config/db');
 const Authorization = db.models.authorization;
 
 async function createAuthorization(call, callback) {
-  const { userID, password } = call.request;
+  const { userID, password, facebookID } = call.request;
 
   try {
     const schema = Joi.object().keys({
       userID: Joi.string().required(),
       password: Joi.string().required(),
+      facebookID: Joi.string().optional(),
     });
     const validation = Joi.validate(call.request, schema);
     if (validation.error !== null) throw new Error(validation.error.details[0].message);
@@ -17,6 +18,7 @@ async function createAuthorization(call, callback) {
     const data = new Authorization();
     if (userID !== undefined) data.userID = userID;
     if (password !== undefined) data.password = password;
+    if (facebookID !== undefined) data.facebookID = facebookID;
 
     await data.save();
 
@@ -28,16 +30,20 @@ async function createAuthorization(call, callback) {
 }
 
 async function getAuthorizationByID(call, callback) {
-  const { id } = call.request;
+  const { id, facebookID, userID } = call.request;
   try {
     const schema = Joi.object().keys({
-      id: Joi.string().required(),
+      id: Joi.string().optional(),
+      facebookID: Joi.string().optional(),
+      userID: Joi.string().optional(),
     });
     const validation = Joi.validate(call.request, schema);
     if (validation.error !== null) throw new Error(validation.error.details[0].message);
 
     const match = {};
     if (id !== undefined) match._id = id;
+    if (facebookID !== undefined) match.facebookID = facebookID;
+    if (userID !== undefined) match.userID = facebookID;
 
     const data = await Authorization.findOne(match);
 
