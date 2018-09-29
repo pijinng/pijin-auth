@@ -13,6 +13,7 @@ const AuthorizationSchema = new Schema(
       index: true,
     },
     password: { type: String, required: true },
+    facebookID: { type: String, unique: true },
   },
   { timestamps: true },
 );
